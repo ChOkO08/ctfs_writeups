@@ -115,8 +115,8 @@ SSH-2.0-OpenSSH_6.6.1
 pass_from: ::1 	user: root 	pass: ohcohYie9E
 pass_from: 192.168.0.177 	user: root 	pass: ohcohYie9E
 pass_from: 192.168.0.177 	user: root 	pass: AhooCo7wei
-pass_from: 192.168.0.177 	user: root 	pass: OhCeW4ahsh             # última senha válida do root :)
-pass_from: 192.168.0.177 	user: root 	pass: Woemash9ie4chee7Oe4p   # senha alterada pelos 'malditos hackers'
+pass_from: 192.168.0.177 	user: root 	pass: OhCeW4ahsh             
+pass_from: 192.168.0.177 	user: root 	pass: Woemash9ie4chee7Oe4p   # última senha válida do root :)
 pass_from: 192.168.250.1 	user: user 	pass: password               # senha que nós alteramos
 ```
 
@@ -129,6 +129,6 @@ Aprendemos que o código possui três características principais:
 Gostei do desafio pois fazia uns 3 anos que não mexia com o photorec e nada relacionado a forense e investigação. Também foi muito bom para relembrar conceitos básicos de administração de SO (reset da senha do ubuntu), noções de programação e engenharia reversa.
 
 ## Here is a flag for you 
-**FLAG: CTF-BR{wl4SUuXeSU,OhCeW4ahsh}**
+**FLAG: CTF-BR{wl4SUuXeSU,Woemash9ie4chee7Oe4p}**
 
 \o/ RTFM \o/

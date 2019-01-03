@@ -22,18 +22,18 @@
 
 Este ano o desafio do CTF-BR para o [Hall of Fame](https://ctf-br.org/hall-of-fame/) trouxe um desafio de forense bem interessante. Aparentemente um de nossos servidores foi ownado e pra melhorar instalaram um rootkit...!
 
-[¬___¬'](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlZRFJevs0yhUbh1NBE7QsxQ9VohUZ86ErbhudcxmxHi_15W7l "Malditos Hackers ¬__¬'")
+![¬___¬'](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlZRFJevs0yhUbh1NBE7QsxQ9VohUZ86ErbhudcxmxHi_15W7l "Malditos Hackers ¬__¬'")
 
 O desafio nos pede para analisar o dump do sistema e determinar duas coisas:
   1. senha utilizada para dump, e;
   2. última senha root legítima.
  
 Após o download primeiro verifiquei qual o tipo de arquivo:
-[!File type](https://imgur.com/ffFO7Wi)
+![File type](https://imgur.com/ffFO7Wi)
 
 Fazendo jus à minha fama de desconfiado, também confiro o hash do arquivo:
 
-[!...epa, hashes diferentes? Õ_õ...esse gnx eh f0dz -_-](https://imgur.com/FCx4Sip)
+![...epa, hashes diferentes? Õ_õ...esse gnx eh f0dz ](https://imgur.com/FCx4Sip)
 
 Como o challenge não informou as credenciais desta máquina, resolvi seguir duas abordagens:
   1. recuperar os arquivos da imagem dada utilizando o [photorec](https://www.cgsecurity.org/wiki/PhotoRec), e;
@@ -88,7 +88,7 @@ Neste momento comecei a pesquisar por rootkits com estes nomes: skynet, skylnx e
 
 Nesta análise utilizei uma máquina virtual Ubuntu que tinha pego da [OSBoxes](https://www.osboxes.org/) e apenas substitui seu disco pela imagem do desafio. As credenciais não foram informadas, então substituí a senha do [root](https://unix.stackexchange.com/questions/76313/change-password-of-a-user-in-etc-shadow) por _password_ alterando o [menu do grub](https://askubuntu.com/questions/24006/how-do-i-reset-a-lost-administrative-password).
 
-[resetando senha do user](https://imgur.com/dkHZsez)
+![resetando senha do user](https://imgur.com/dkHZsez)
 
 Agora com acesso comecei a investigar melhor o servidor SSH (/usr/sbin/sshd). Pude identificar que a versão do SSHD realmente havia sido modificada pelo rootkit:
 

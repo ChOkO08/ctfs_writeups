@@ -29,11 +29,11 @@ O desafio nos pede para analisar o dump do sistema e determinar duas coisas:
   2. última senha root legítima.
  
 Após o download primeiro verifiquei qual o tipo de arquivo:
-![File type](https://imgur.com/ffFO7Wi)
+![File type](https://i.imgur.com/ffFO7Wi.png)
 
 Fazendo jus à minha fama de desconfiado, também confiro o hash do arquivo:
 
-![...epa, hashes diferentes? Õ_õ...esse gnx eh f0dz ](https://imgur.com/FCx4Sip)
+![epa, hashes diferentes? Õ_õ...esse gnx eh f0dz ](https://i.imgur.com/FCx4Sip.png)
 
 Como o challenge não informou as credenciais desta máquina, resolvi seguir duas abordagens:
   1. recuperar os arquivos da imagem dada utilizando o [photorec](https://www.cgsecurity.org/wiki/PhotoRec), e;
@@ -48,12 +48,12 @@ mkdir photo
 photorec ub1404lts-disk1.vmdk
 ```
 
-![photorec](https://imgur.com/g5N10lA)
+![photorec](https://i.imgur.com/g5N10lA.png)
 
 
 Feito isso, o programa recuperou diversos arquivos e os dividiu em 29 diretórios (recup_dir.xx). A idéia era procurar por algum indicativo deste malware na imagem. Como não sabia o que procurar tentei a string 'rootkit' \o/!
 
-![grep -ri rootkit](https://imgur.com/ONzfU6R)
+![grep -ri rootkit](https://i.imgur.com/ONzfU6R.png)
 
 Analisando o script observamos que a senha utilizada para _dump_ é definida como MAGIC_VERSION no arquivo bonny.h, conforme destaque a seguir: 
 
@@ -74,7 +74,7 @@ _BONNY_
 
 Ok, estamos um passo mais próximos de obter a nossa primeira flag (senha utilizada para o dump). Buscando por bonny.h encontramos outro fonte. O arquivo recuperado veio pela metade, mas ajudou a ter uma idéia melhor sobre o que procurar. 
 
-![trecho do rootkit](https://imgur.com/DeiARfW)
+![trecho do rootkit](https://i.imgur.com/DeiARfW.png)
 
 Passando rapidamente pelo código, este rootkit substitui os binários do ssh e sshd por sua versão infectada (mas como o autor é bonzinho ele faz o backup dos arquivos para você antes de te infectar :)...
 
@@ -88,7 +88,7 @@ Neste momento comecei a pesquisar por rootkits com estes nomes: skynet, skylnx e
 
 Nesta análise utilizei uma máquina virtual Ubuntu que tinha pego da [OSBoxes](https://www.osboxes.org/) e apenas substitui seu disco pela imagem do desafio. As credenciais não foram informadas, então substituí a senha do [root](https://unix.stackexchange.com/questions/76313/change-password-of-a-user-in-etc-shadow) por _password_ alterando o [menu do grub](https://askubuntu.com/questions/24006/how-do-i-reset-a-lost-administrative-password).
 
-![resetando senha do user](https://imgur.com/dkHZsez)
+![resetando senha do user](https://i.imgur.com/dkHZsez.png)
 
 Agora com acesso comecei a investigar melhor o servidor SSH (/usr/sbin/sshd). Pude identificar que a versão do SSHD realmente havia sido modificada pelo rootkit:
 
@@ -99,11 +99,11 @@ Binary file /usr/sbin/sshd matches
 
 Reparei que não havia encontrado o arquivo bonny.h (que possui as senhas para operação do rootkit) nos arquivos recuperados pelo photorec. Então fiz uma pesquisa nos ELF (mais uma vez, salvo pelo SANTO STRINGS) e encontrei lá (no que deve ser o binário do SSHD) as senhas.
 
-![rootkit strings](https://imgur.com/uwcUqFl)
+![rootkit strings](https://i.imgur.com/uwcUqFl.png)
 
 Após mais algum tempo no código-fonte resolvi que daria muito trabalho criar o meu próprio cliente SSH para enviar as strings de versão que o rootkit estava esperando (mas pode ser um bom exercício se você está aprendendo programação). Como eu não confio no gnx (e você também não deveria) resolvi baixar o código do rootkit para a máquina ownada e comecei a brincar a partir dela. 
 
-![rodando o rootkit](https://imgur.com/MlXoRxH)
+![rodando o rootkit](https://i.imgur.com/MlXoRxH.png)
 
 Depois de algum tempo entendi o funcionamento do _skycommand.c_ e compilei o meu *skycmd* para conseguir realizar o dump que o desafio pede:
 ```script
@@ -125,8 +125,7 @@ Aprendemos que o código possui três características principais:
   2. realiza um dump que revela as credenciais utilizadas nas últimas tentativas válidas de autenticação ao sistema-alvo, quando recebe como informação de versão local do cliente SSH a string configurada em MAGIC_VERSION; 
   3. executa um comando como root se você informar a string configurada em SKYCOMMAND se você executar o binário gerado pelo _skycommand.c_ como a versão local do cliente SSH seguida de um comando.
 
-![client_version_string](https://imgur.com/DEWSlDT)
-
+![client_version_string](https://i.imgur.com/DEWSlDT.png)
 Gostei do desafio pois fazia uns 3 anos que não mexia com o photorec e nada relacionado a forense e investigação. Também foi muito bom para relembrar conceitos básicos de administração de SO (reset da senha do ubuntu), noções de programação e engenharia reversa.
 
 ## Here is a flag for you 
